@@ -8,6 +8,7 @@ var di = -1
 
 function setup() {
   createCanvas(360, 360);
+  textAlign(LEFT, TOP);
   settings();
 }
 
@@ -64,7 +65,7 @@ function sleep(millisecondsDuration)
 }
 
 function mousePressed() {
-  if(chs == 0) {
+  if(chs == 0&&mouseX <= grid*9&&mouseX >= 0&&mouseY <= grid*9&&mouseY >= 0) {
     chp[0] = tile(mouseX,mouseY);
     //console.log(chp[0]);
     chs = 1;
@@ -78,7 +79,7 @@ function mouseReleased() {
       //console.log(chp[1]);
       chs = 2;
       changeTile();
-      dropBlocks(750);
+      dropBlocks(350);
     }
   }
 }
@@ -123,6 +124,32 @@ function changeTile() {
     var p1 = bd[chp[0][0]][chp[0][1]];
     var p2 = bd[chp[0][0]+t[1]][chp[0][1]+t[0]];
     
+    if(isItem(p1)||isItem(p2)) {
+      var n1 = getItemNum(p1,p2,10,20);
+      var n2 = getItemNum(p1,p2,20,30);
+      if(n1 != 0&&n2 != 0) {
+        bd[chp[0][0]+t[1]][chp[0][1]+t[0]] = p1;
+        bd[chp[0][0]][chp[0][1]] = p2;
+        var tmp = more3(bd);
+        cb(tmp);
+        var tmp2 = xty(more3(rtc(bd)));
+        cb(tmp2);
+        repaint();
+      }
+      if(n1 != 0) {
+        if(n1 == 1) {
+          runItem1(chp[0][0]+t[1],chp[0][1]+t[0]);
+        }else {
+          runItem1(chp[0][0],chp[0][1])
+        }
+      }else if(n2 != 0) {
+        if(n2 == 1) {
+          runItem2(chp[0][0]+t[1],chp[0][1]+t[0]);
+        }else {
+          runItem2(chp[0][0],chp[0][1])
+        }
+      }
+    }else {
     var arr = JSON.parse(JSON.stringify(bd))
     console.log(arr[chp[0][0]+t[1]][chp[0][1]+t[0]],arr[chp[0][0]][chp[0][1]],bd[chp[0][0]+t[1]][chp[0][1]+t[0]],bd[chp[0][0]][chp[0][1]]);
     arr[chp[0][0]+t[1]][chp[0][1]+t[0]] = p1;
@@ -142,15 +169,111 @@ function changeTile() {
     var tmp2 = xty(more3(rtc(bd)));
     cb(tmp2);
     repaint();
+    }
   }
 }
 
+function runItem1(y,x) {
+  var tf = true;
+  var d = [[0,-1],[1,0],[0,1],[-1,0]];//x,y
+  var xy = [[x,y],[x,y]];//EW or SN
+  var ds = [-1,-1];
+  var a = -1;
+  if(di % 2 != 0) {//ew
+    ds[0] = 1;
+    ds[1] = 3;
+    a = 0;
+  }else {//sn
+    ds[0] = 2;
+    ds[1] = 0;
+    a = 1;
+  }
+  var ts = [];
+  while(tf) {
+    var t = [[-1,-1,-1],[-1,-1,-1]];
+    t[0][0] = xy[0][0];
+    t[0][1] = xy[0][1];
+    
+    t[1][0] = xy[1][0];
+    t[1][1] = xy[1][1];
+    ts = ts.concat(t)
+    if(xy[0][a] >= bd.length-1&&xy[1][a] <= 0) {
+      break;
+    }
+    xy[0][a] += d[ds[0]][a];
+    xy[1][a] += d[ds[1]][a];
+    
+  }
+  console.log(ts);
+  cb(ts);
+  repaint();
+}
+
+function runItem2(y,x) {
+  var tf = true;
+  var d = [[0,-1],[1,0],[0,1],[-1,0]];//x,y
+  var xy = [[x,y],[x,y],[x,y],[x,y]];//EW or SN
+  var ds = [0,3,2,1];
+  var a = [1,0,1,0];
+  var ts = [];
+  while(tf) {
+    var t = [[-1,-1,-1],[-1,-1,-1],[-1,-1,-1],[-1,-1,-1]];
+    t[0][0] = xy[0][0];
+    t[0][1] = xy[0][1];
+    
+    t[1][0] = xy[1][0];
+    t[1][1] = xy[1][1];
+    
+    t[2][0] = xy[2][0];
+    t[2][1] = xy[2][1];
+    
+    t[3][0] = xy[3][0];
+    t[3][1] = xy[3][1];
+    
+    ts = ts.concat(t)
+    if(xy[0][a[0]] <= 0&&xy[1][a[1]] <= 0&&xy[2][a[2]] >= bd.length-1&&xy[3][a[3]] >= bd.length-1) {
+      break;
+    }
+    xy[0][a[0]] += d[ds[0]][a[0]];
+    xy[1][a[1]] += d[ds[1]][a[1]];
+    xy[2][a[2]] += d[ds[2]][a[2]];
+    xy[3][a[3]] += d[ds[3]][a[3]];
+    
+  }
+  console.log(ts);
+  cb(ts);
+  repaint();
+}
+
+function getItemNum(p1,p2,min,max) {
+  if(p1 >= min&&p1 < max) {
+    return 1;
+  }else if(p2 >= min&&p2 < max) {
+    return 2;
+  }else {
+    return 0;
+  }
+}
+
+function isItem(i) {
+  if(i >= 10) {
+    return true;
+  }
+  return false;
+}
+
 function cb(arr) {
-  console.log(arr);
+  /*var ki = [];
+  for(var b of items) {
+    bd[b[1]][b[0]] = b[2];
+  }*/
+  //console.log(arr);
   for(var a of arr) {
     //fill(cols[6])
     //circle(a[0]*grid, a[1]*grid, 10);
-    bd[a[1]][a[0]] = -1;
+    if(a[0] >= 0&&a[1] >= 0&&a[0] < bd.length&&a[0] < bd.length) {
+      bd[a[1]][a[0]] = a[2];
+    }
   }
 }
 
@@ -192,13 +315,13 @@ function more3(arr) {
       if(n == -10) {
         n = arr[dy1][dx1];
         l = m.length-1;
-        m.push([dx1,dy1]);
+        m.push([dx1,dy1,-1]);
         c++;
       }else {
         if(arr[dy1][dx1] == n) {
           //console.log(n);
           l = m.length-1;
-          m.push([dx1,dy1]);
+          m.push([dx1,dy1,-1]);
           c++;
         }else {
           if(c < 3) {
@@ -206,10 +329,17 @@ function more3(arr) {
               m.pop();
             }
             c = 0;
+            
+          }else if(c == 4) {
+            m.push([dx1-3,dy1,bd[dx1-3][dy1]+1*10]);
+            c = 0;
+          }else if(c == 5) {
+            m.push([dx1-3,dy1,bd[dx1-3][dy1]+2*10]);
+            c = 0;
           }else {
             c = 0;
           }
-          m.push([dx1,dy1]);
+          m.push([dx1,dy1,-1]);
           c++;
         }
         //console.log("c",c,m.length);
@@ -219,6 +349,14 @@ function more3(arr) {
             for(var i2 = 0;i2 < c;i2++) {
               m.pop();
             }
+          }else if(c == 4) {
+            m.push([dx1-3,dy1,bd[dx1-3][dy1]+1*10]);
+            c = 0;
+          }else if(c == 5) {
+            m.push([dx1-3,dy1,bd[dx1-3][dy1]+2*10]);
+            c = 0;
+          }else {
+            c = 0;
           }
         }
         
@@ -263,25 +401,21 @@ function repaint() {
   clear();
   for(var dy = 0;dy < bd.length;dy++) {
     for(var dx = 0;dx < bd[dy].length;dx++) {
-      /*switch(bd[dy][dx]) {
-        case 0:
-          fill("black")
-          rect(dx*grid+1,dy*grid+1,grid-2,grid-2);
-          break;
-        case 1:
-          fill("red")
-          rect(dx*grid+1,dy*grid+1,grid-2,grid-2);
-          break;
-        case 2:
-          fill("blue")
-          rect(dx*grid+1,dy*grid+1,grid-2,grid-2);
-          break;
-        
-      }*/
-      //console.log(bd[dy][dx])
       if(bd[dy][dx] != -1) {
-        fill(cols[bd[dy][dx]]);
-        rect(dx*grid+1,dy*grid+1,grid-2,grid-2);
+        if(bd[dy][dx] >= 10&&bd[dy][dx] < 20) {
+          fill(cols[bd[dy][dx]-10]);
+          ellipse(dx*grid+grid/2,dy*grid+grid/2,grid-4);
+        }else if(bd[dy][dx] >= 20&&bd[dy][dx] < 30) {
+          //fill(cols[bd[dy][dx]-20]);
+          fill("black");
+          ellipse(dx*grid+grid/2,dy*grid+grid/2,grid-4);
+        }else {
+          //console.log(bd[dy][dx]);
+          if(typeof bd[dy][dx] !== "undefined") {
+            fill(cols[bd[dy][dx]]);
+            rect(dx*grid+1,dy*grid+1,grid-2,grid-2);
+          }
+        }
       }
     }
   }
