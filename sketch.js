@@ -151,10 +151,10 @@ function changeTile() {
       }
     }else {
     var arr = JSON.parse(JSON.stringify(bd))
-    console.log(arr[chp[0][0]+t[1]][chp[0][1]+t[0]],arr[chp[0][0]][chp[0][1]],bd[chp[0][0]+t[1]][chp[0][1]+t[0]],bd[chp[0][0]][chp[0][1]]);
+    //console.log(arr[chp[0][0]+t[1]][chp[0][1]+t[0]],arr[chp[0][0]][chp[0][1]],bd[chp[0][0]+t[1]][chp[0][1]+t[0]],bd[chp[0][0]][chp[0][1]]);
     arr[chp[0][0]+t[1]][chp[0][1]+t[0]] = p1;
     arr[chp[0][0]][chp[0][1]] = p2;
-    console.log(arr[chp[0][0]+t[1]][chp[0][1]+t[0]],arr[chp[0][0]][chp[0][1]],bd[chp[0][0]+t[1]][chp[0][1]+t[0]],bd[chp[0][0]][chp[0][1]]);
+    //console.log(arr[chp[0][0]+t[1]][chp[0][1]+t[0]],arr[chp[0][0]][chp[0][1]],bd[chp[0][0]+t[1]][chp[0][1]+t[0]],bd[chp[0][0]][chp[0][1]]);
     var t1 = more3(arr);
     var t2 = xty(more3(rtc(arr)));
     
@@ -204,7 +204,7 @@ function runItem1(y,x) {
     xy[1][a] += d[ds[1]][a];
     
   }
-  console.log(ts);
+  //console.log(ts);
   cb(ts);
   repaint();
 }
@@ -240,7 +240,7 @@ function runItem2(y,x) {
     xy[3][a[3]] += d[ds[3]][a[3]];
     
   }
-  console.log(ts);
+  //console.log(ts);
   cb(ts);
   repaint();
 }
@@ -271,7 +271,8 @@ function cb(arr) {
   for(var a of arr) {
     //fill(cols[6])
     //circle(a[0]*grid, a[1]*grid, 10);
-    if(a[0] >= 0&&a[1] >= 0&&a[0] < bd.length&&a[0] < bd.length) {
+    if(a[0] >= 0&&a[1] >= 0&&a[0] < bd.length&&a[1] < bd.length) {
+      //console.log(a);
       bd[a[1]][a[0]] = a[2];
     }
   }
@@ -331,10 +332,10 @@ function more3(arr) {
             c = 0;
             
           }else if(c == 4) {
-            m.push([dx1-3,dy1,bd[dx1-3][dy1]+1*10]);
+            m.push([dx1-3,dy1,arr[dy1][dx1-3]+1*10]);
             c = 0;
           }else if(c == 5) {
-            m.push([dx1-3,dy1,bd[dx1-3][dy1]+2*10]);
+            m.push([dx1-3,dy1,arr[dy1][dx1-3]+2*10]);
             c = 0;
           }else {
             c = 0;
@@ -350,10 +351,10 @@ function more3(arr) {
               m.pop();
             }
           }else if(c == 4) {
-            m.push([dx1-3,dy1,bd[dx1-3][dy1]+1*10]);
+            m.push([dx1-3,dy1,arr[dy1][dx1-3]+1*10]);
             c = 0;
           }else if(c == 5) {
-            m.push([dx1-3,dy1,bd[dx1-3][dy1]+2*10]);
+            m.push([dx1-3,dy1,arr[dy1][dx1-3]+2*10]);
             c = 0;
           }else {
             c = 0;
