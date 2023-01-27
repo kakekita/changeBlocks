@@ -7,7 +7,7 @@ var di = -1
 var goalk = [];
 var goaln = [];
 var rBlocks = [0,0,0,0,0,0];
-var cItems = [];//4,5
+var cItems = [0,0];//4,5
 var maxBlocks = -1;
 
 function setup() {
