@@ -1,8 +1,29 @@
 html, body {
   margin: 0;
   padding: 0;
-  overflow: hidden;
+  overfidden;
 }
 canvas {
   display: block;
+}
+
+.rect {
+  font-size: 80px;
+}
+.string {
+  font-size: 30px;
+}
+
+.nov {
+  display: none;
+}
+
+.goldFont {
+	font-size:5em;
+	text-align:center;
+	line-height:0.95em;
+	font-weight:bold;
+	color: transparent;
+	background: repeating-linear-gradient(0deg, #B67B03 0.1em, #DAAF08 0.2em, #FEE9A0 0.3em, #DAAF08 0.4em, #B67B03 0.5em); 
+	-webkit-background-clip: text;
 }

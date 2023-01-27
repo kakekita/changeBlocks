@@ -4,12 +4,21 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/addons/p5.sound.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.js"></script>
     <link rel="stylesheet" type="text/css" href="style.css">
     <meta charset="utf-8" />
   </head>
   <body>
-    <main>
+    <main style="position: relative;">
+      <canvas id="myRadarChart" class="nov" style="position: absolute;z-index:10;background-color: rgb(220,220,220)"></canvas>
+      <div id="myScore" class="goldFont" style="position: absolute;z-index:11"></div>
     </main>
+    <div style="position: absolute;top: 375px;">
+      <span class="rect" id="rect1">■</span><span class="string" id="goal1">x10</span>
+      <span class="rect" id="rect2">■</span><span class="string" id="goal2">x10</span>
+      <span class="rect" id="rect3">■</span><span class="string" id="goal3">x10</span>
+      <span class="rect" id="rect4">■</span><span class="string" id="goal4">x10</span>
+    </div>
     <script src="sketch.js"></script>
   </body>
 </html>

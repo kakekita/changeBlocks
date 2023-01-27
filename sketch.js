@@ -4,10 +4,14 @@ var grid = 40;
 var chs = 0;// 0:default, 1:mousePressed, 2:mouseReleased
 var chp = [[],[]];
 var di = -1
-
+var goalk = [];
+var goaln = [];
+var rBlocks = [0,0,0,0,0,0];
+var maxBlocks = -1;
 
 function setup() {
-  createCanvas(360, 360);
+  var cv = createCanvas(360, 360);
+  cv.style("position","absolute");
   textAlign(LEFT, TOP);
   settings();
 }
@@ -53,6 +57,10 @@ async function dropBlocks(t) {
     }
     await sleep(t);
     repaint();
+  }
+  if(goaln.reduce((sum, element) => sum + element, 0) == 0) {
+    await sleep(500);
+    showScores();
   }
   chs = 0;
 }
@@ -273,6 +281,22 @@ function cb(arr) {
     //circle(a[0]*grid, a[1]*grid, 10);
     if(a[0] >= 0&&a[1] >= 0&&a[0] < bd.length&&a[1] < bd.length) {
       //console.log(a);
+      if(a[2] == -1) {
+        var v = bd[a[1]][a[0]];
+        if(v < 10) {
+          var i2 = rBlocks[v];
+          i2++;
+          rBlocks[v] = i2;
+        }
+        if(goalk.indexOf(v) != -1) {
+          if(goaln[goalk.indexOf(v)] > 0) {
+            var i = goaln[goalk.indexOf(v)];
+            i--;
+            goaln[goalk.indexOf(v)] = i
+            document.getElementById("goal"+String(goalk.indexOf(v)+1)).textContent = "x"+String(goaln[goalk.indexOf(v)]);
+          }
+        }
+      }
       bd[a[1]][a[0]] = a[2];
     }
   }
@@ -390,12 +414,87 @@ function tile(x,y) {
 }
 
 function settings() {
+  var i = 0;
+  while(goalk.length < 4) {
+    var r = Math.floor(Math.random() * 6);
+    var r2 = Math.floor(Math.random() * 8)+24;
+    //var r2 = Math.floor(Math.random() * 8);
+    if(goalk.indexOf(r) == -1) {
+      i++;
+      var rt = document.getElementById("rect"+String(i));
+      var gl = document.getElementById("goal"+String(i));
+      goalk.push(r);
+      console.log(r);
+      rt.style.color = cols[r];
+      goaln.push(r2);
+      gl.textContent = "x"+String(r2);
+    }
+  }
+  console.log(goalk);
+  maxBlocks = goaln.reduce((sum, element) => sum + element, 0);
   for(var dy = 0;dy < bd.length;dy++) {
     for(var dx = 0;dx < bd[dy].length;dx++) {
       bd[dy][dx] = -1;
     }
   }
   dropBlocks(0);
+}
+
+function showScores() {
+var scs = document.getElementById("myScore");
+var ctx = document.getElementById("myRadarChart");
+var myChart = new Chart(ctx, {
+  type: 'radar',
+  data: {
+    labels:["赤色","青色","緑色","水色","黄色","橙色"],
+    datasets: [
+      {
+        //グラフのデータ(上から時計回り)
+        data: rBlocks,
+        //グラフ全体のラベル
+        label: "消した数",
+        //背景色
+        backgroundColor: "rgba(100,0,100,0.5)",
+        //線の終端を四角にするか丸めるかの設定。デフォルトは四角(butt)。
+        borderCapStyle: "butt",
+        //線の色
+        borderColor: "rgba(0,0,180,0.75)",
+        //線を破線にする
+        borderDash: [],
+        //破線のオフセット(基準点からの距離)
+        borderDashOffset: 0.0,
+        //線と線が交わる箇所のスタイル。初期値は'miter'
+          borderJoinStyle: 'miter',
+          //線の幅。ピクセル単位で指定。初期値は3。
+          borderWidth: 3,
+          //グラフを塗りつぶすかどうか。初期値はtrue。falseにすると枠線だけのグラフになります。
+          fill: false,
+          //複数のグラフを重ねて描画する際の重なりを設定する。z-indexみたいなもの。初期値は0。
+          order: 0,
+          //0より大きい値にすると「ベジェ曲線」という数式で曲線のグラフになります。初期値は0。
+          lineTension: 0
+      }
+    ]
+  },
+  options: {
+    scales: {
+      r: {
+        //グラフの最小値・最大値
+        min: 0
+      }
+    }
+  }
+});
+
+var sumBlocks = rBlocks.reduce((sum, element) => sum + element, 0)
+var s = Math.round(sumBlocks/maxBlocks*100);
+console.log(s);
+scs.textContent = String(s)+"pt";
+
+
+ctx.classList.remove("nov");
+scs.classList.remove("nov");
+
 }
 
 function repaint() {
