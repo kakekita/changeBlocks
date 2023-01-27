@@ -255,6 +255,7 @@ function runItem2(y,x) {
   cb(ts);
   repaint();
   cItems[1] = cItems[1]+1;
+  console.log(cItems)
 }
 
 function getItemNum(p1,p2,min,max) {
@@ -491,7 +492,7 @@ var myChart = new Chart(ctx, {
 });
 
 var sumBlocks = rBlocks.reduce((sum, element) => sum + element, 0)
-var s = Math.round(sumBlocks/maxBlocks*100)+cItems[0]*4+cItems[1]*5;
+var s = Math.round(sumBlocks/maxBlocks*100)+parseInt(cItems[0]*4)+parseInt(cItems[1]*5);
 console.log(s);
 scs.textContent = String(s)+"pt";
 
