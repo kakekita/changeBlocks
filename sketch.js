@@ -7,6 +7,7 @@ var di = -1
 var goalk = [];
 var goaln = [];
 var rBlocks = [0,0,0,0,0,0];
+var cItems = [];//4,5
 var maxBlocks = -1;
 
 function setup() {
@@ -215,6 +216,8 @@ function runItem1(y,x) {
   //console.log(ts);
   cb(ts);
   repaint();
+  cItems[0] = cItems[0]+1;
+  
 }
 
 function runItem2(y,x) {
@@ -251,6 +254,7 @@ function runItem2(y,x) {
   //console.log(ts);
   cb(ts);
   repaint();
+  cItems[1] = cItems[1]+1;
 }
 
 function getItemNum(p1,p2,min,max) {
@@ -487,7 +491,7 @@ var myChart = new Chart(ctx, {
 });
 
 var sumBlocks = rBlocks.reduce((sum, element) => sum + element, 0)
-var s = Math.round(sumBlocks/maxBlocks*100);
+var s = Math.round(sumBlocks/maxBlocks*100)+cItems[0]*4+cItems[1]*5;
 console.log(s);
 scs.textContent = String(s)+"pt";
 
