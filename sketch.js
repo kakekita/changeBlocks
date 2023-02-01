@@ -525,6 +525,7 @@ function settings() {
     }
   }
   //----- test -----//
+  /*
   bd[6][6] = 2
   bd[7][6] = 2
   bd[8][5] = 2
@@ -538,6 +539,7 @@ function settings() {
   bd[7][0] = 1
   bd[8][1] = 1
   bd[7][2] = 1
+  */
   //----- end -----//
   dropBlocks(0);
 }
