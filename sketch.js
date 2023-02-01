@@ -49,9 +49,13 @@ async function dropBlocks(t) {
     }
     //await sleep(t);
     var tmp = more3(bd);
-    cb(tmp);
     var tmp2 = xty(more3(rtc(bd)));
-    cb(tmp2);
+    var tmp3 = concat2(tmp,tmp2);
+    var tmp4 = getDouble(tmp3);
+    console.log("tmp4 : ",tmp4);
+    tmp3 = concat2(tmp3,tmp4);
+    cb(tmp3);
+    repaint();
     //console.log(tmp,tmp2);
     if(tmp.length == 0&&tmp2.length == 0){
       break;
@@ -64,6 +68,64 @@ async function dropBlocks(t) {
     showScores();
   }
   chs = 0;
+}
+
+function getDouble(arr) {
+  var tmp = [[],[]];//x,y
+  for(var a of arr) {
+    tmp[0].push(a[0]);
+    tmp[1].push(a[1]);
+  }
+  /*console.log("result1 is running")
+  var result1 = [];
+  for(var t in tmp[0]) {
+    var num_flt = tmp[0].filter(function(value) {
+      console.log(value,this[t],t,arr[t][3],(arr[t][3] == 0||arr[t][3] == 2));
+      if(value == this[t]&&tmp[0].indexOf(this[t]) != tmp[0].lastIndexOf(this[t])) if(arr[t][3] == 0||arr[t][3] == 2) result1.push(t);
+    },tmp[0]);
+    //console.log("flt",num_flt);
+    //result1 = result1.concat(num_flt);
+  }
+  console.log("result2 is running")
+  var result2 = [];
+  for(var t2 in tmp[1]) {
+    var num_flt2 = tmp[1].filter(function(value) {
+      console.log(value,this[t2],t2,arr[t2][3],(arr[t2][3] == 0||arr[t2][3] == 2));
+      if(value == this[t2]&&tmp[1].indexOf(this[t2]) != tmp[1].lastIndexOf(this[t2])) if(arr[t2][3] == 0||arr[t2][3] == 2) result2.push(t2);
+    },tmp[1]);
+    //console.log("flt2",num_flt2);
+    //result2 = result2.concat(num_flt2);
+  }*/
+  var r3 = [];
+  for(var ts1 in arr) {
+    for(var ts2 in arr) {
+      if(arr[ts1][0] == arr[ts2][0]&&arr[ts1][1] == arr[ts2][1]&&ts1 != ts2&&(arr[ts1][3] == 0||arr[ts1][3] == 2)) {
+        r3.push(ts1);
+      }
+    }
+  }
+  /*console.log("tmp", tmp);
+  console.log("result1",result1)
+  console.log("result2",result2)
+  var r1 = result1.filter(function (x, i, self) {
+    return self.indexOf(x) === i && i !== self.lastIndexOf(x);
+  });
+  var r2 = result2.filter(function (x, i, self) {
+    return self.indexOf(x) === i && i !== self.lastIndexOf(x);
+  });
+  
+  var rs = r1.concat(r2);
+  
+  var r3 = rs.filter(function (x, i, self) {
+    return self.indexOf(x) === i && i !== self.lastIndexOf(x);
+  });*/
+  
+  var xyr = [];
+  
+  if(r3.length >= 2) {
+    xyr.push([arr[r3[0]][0],arr[r3[0]][1],20,-1]);
+  }
+  return xyr;
 }
 
 function sleep(millisecondsDuration)
@@ -140,9 +202,12 @@ function changeTile() {
         bd[chp[0][0]+t[1]][chp[0][1]+t[0]] = p1;
         bd[chp[0][0]][chp[0][1]] = p2;
         var tmp = more3(bd);
-        cb(tmp);
         var tmp2 = xty(more3(rtc(bd)));
-        cb(tmp2);
+        var tmp3 = concat2(tmp,tmp2);
+        var tmp4 = getDouble(tmp3);
+        console.log("tmp4:",tmp4);
+        tmp3 = concat2(tmp3,tmp4);
+        cb(tmp3);
         repaint();
       }
       if(n1 != 0) {
@@ -159,27 +224,47 @@ function changeTile() {
         }
       }
     }else {
-    var arr = JSON.parse(JSON.stringify(bd))
-    //console.log(arr[chp[0][0]+t[1]][chp[0][1]+t[0]],arr[chp[0][0]][chp[0][1]],bd[chp[0][0]+t[1]][chp[0][1]+t[0]],bd[chp[0][0]][chp[0][1]]);
-    arr[chp[0][0]+t[1]][chp[0][1]+t[0]] = p1;
-    arr[chp[0][0]][chp[0][1]] = p2;
-    //console.log(arr[chp[0][0]+t[1]][chp[0][1]+t[0]],arr[chp[0][0]][chp[0][1]],bd[chp[0][0]+t[1]][chp[0][1]+t[0]],bd[chp[0][0]][chp[0][1]]);
-    var t1 = more3(arr);
-    var t2 = xty(more3(rtc(arr)));
-    
-    if(t1.length != 0||t2.length != 0) {
-      bd[chp[0][0]+t[1]][chp[0][1]+t[0]] = p1;
-      bd[chp[0][0]][chp[0][1]] = p2;
-    }
-    repaint();
-    
-    var tmp = more3(bd);
-    cb(tmp);
-    var tmp2 = xty(more3(rtc(bd)));
-    cb(tmp2);
-    repaint();
+      var arr = JSON.parse(JSON.stringify(bd))
+      //console.log(arr[chp[0][0]+t[1]][chp[0][1]+t[0]],arr[chp[0][0]][chp[0][1]],bd[chp[0][0]+t[1]][chp[0][1]+t[0]],bd[chp[0][0]][chp[0][1]]);
+      arr[chp[0][0]+t[1]][chp[0][1]+t[0]] = p1;
+      arr[chp[0][0]][chp[0][1]] = p2;
+      //console.log(arr[chp[0][0]+t[1]][chp[0][1]+t[0]],arr[chp[0][0]][chp[0][1]],bd[chp[0][0]+t[1]][chp[0][1]+t[0]],bd[chp[0][0]][chp[0][1]]);
+      var t1 = more3(arr);
+      var t2 = xty(more3(rtc(arr)));
+
+      if(t1.length != 0||t2.length != 0) {
+        bd[chp[0][0]+t[1]][chp[0][1]+t[0]] = p1;
+        bd[chp[0][0]][chp[0][1]] = p2;
+      }
+      repaint();
+
+      var tmp = more3(bd);
+      var tmp2 = xty(more3(rtc(bd)));
+      var tmp3 = concat2(tmp,tmp2);
+      var tmp4 = getDouble(tmp3);
+      console.log("tmp4 : ",tmp4);
+      tmp3 = concat2(tmp3,tmp4);
+      cb(tmp3);
+      repaint();
     }
   }
+}
+
+function concat2(array1, array2, axis){
+  if(axis != 1) axis = 0;
+  var array3 = [];
+  if(axis == 0){  //　縦方向の結合
+    array3 = array1.slice();
+    for(var i = 0; i < array2.length; i++){
+      array3.push(array2[i]);
+    }
+  }
+  else{  //　横方向の結合
+    for(var i = 0; i < array1.length; i++){
+      array3[i] = array1[i].concat(array2[i]);
+    }
+  }
+  return array3;
 }
 
 function runItem1(y,x) {
@@ -255,7 +340,6 @@ function runItem2(y,x) {
   cb(ts);
   repaint();
   cItems[1] = cItems[1]+1;
-  console.log(cItems)
 }
 
 function getItemNum(p1,p2,min,max) {
@@ -345,13 +429,13 @@ function more3(arr) {
       if(n == -10) {
         n = arr[dy1][dx1];
         l = m.length-1;
-        m.push([dx1,dy1,-1]);
+        m.push([dx1,dy1,-1,c]);
         c++;
       }else {
         if(arr[dy1][dx1] == n) {
           //console.log(n);
           l = m.length-1;
-          m.push([dx1,dy1,-1]);
+          m.push([dx1,dy1,-1,c]);
           c++;
         }else {
           if(c < 3) {
@@ -361,15 +445,15 @@ function more3(arr) {
             c = 0;
             
           }else if(c == 4) {
-            m.push([dx1-3,dy1,arr[dy1][dx1-3]+1*10]);
+            m.push([dx1-3,dy1,arr[dy1][dx1-3]+1*10,c]);
             c = 0;
           }else if(c == 5) {
-            m.push([dx1-3,dy1,arr[dy1][dx1-3]+2*10]);
+            m.push([dx1-3,dy1,arr[dy1][dx1-3]+2*10,c]);
             c = 0;
           }else {
             c = 0;
           }
-          m.push([dx1,dy1,-1]);
+          m.push([dx1,dy1,-1,c]);
           c++;
         }
         //console.log("c",c,m.length);
@@ -380,10 +464,10 @@ function more3(arr) {
               m.pop();
             }
           }else if(c == 4) {
-            m.push([dx1-3,dy1,arr[dy1][dx1-3]+1*10]);
+            m.push([dx1-3,dy1,arr[dy1][dx1-3]+1*10,c]);
             c = 0;
           }else if(c == 5) {
-            m.push([dx1-3,dy1,arr[dy1][dx1-3]+2*10]);
+            m.push([dx1-3,dy1,arr[dy1][dx1-3]+2*10,c]);
             c = 0;
           }else {
             c = 0;
@@ -422,82 +506,80 @@ function settings() {
   var i = 0;
   while(goalk.length < 4) {
     var r = Math.floor(Math.random() * 6);
-    var r2 = Math.floor(Math.random() * 8)+24;
-    //var r2 = Math.floor(Math.random() * 8);
+    //var r2 = Math.floor(Math.random() * 8)+24;
+    var r2 = Math.floor(Math.random() * 8);
     if(goalk.indexOf(r) == -1) {
       i++;
       var rt = document.getElementById("rect"+String(i));
       var gl = document.getElementById("goal"+String(i));
       goalk.push(r);
-      console.log(r);
       rt.style.color = cols[r];
       goaln.push(r2);
       gl.textContent = "x"+String(r2);
     }
   }
-  console.log(goalk);
   maxBlocks = goaln.reduce((sum, element) => sum + element, 0);
   for(var dy = 0;dy < bd.length;dy++) {
     for(var dx = 0;dx < bd[dy].length;dx++) {
       bd[dy][dx] = -1;
     }
   }
+  //----- test -----//
+  bd[6][6] = 2
+  bd[7][6] = 2
+  bd[8][5] = 2
+  bd[8][6] = 3
+  bd[8][7] = 2
+  bd[8][8] = 2
+  
+  bd[8][0] = 0
+  bd[7][1] = 0
+  bd[8][2] = 0
+  bd[7][0] = 1
+  bd[8][1] = 1
+  bd[7][2] = 1
+  //----- end -----//
   dropBlocks(0);
 }
 
 function showScores() {
 var scs = document.getElementById("myScore");
 var ctx = document.getElementById("myRadarChart");
-var myChart = new Chart(ctx, {
-  type: 'radar',
+var myChart = new Chart(ctx.getContext('2d'), {
+  type: 'bar',
   data: {
-    labels:["赤色","青色","緑色","水色","黄色","橙色"],
-    datasets: [
-      {
-        //グラフのデータ(上から時計回り)
-        data: rBlocks,
-        //グラフ全体のラベル
-        label: "消した数",
-        //背景色
-        backgroundColor: "rgba(100,0,100,0.5)",
-        //線の終端を四角にするか丸めるかの設定。デフォルトは四角(butt)。
-        borderCapStyle: "butt",
-        //線の色
-        borderColor: "rgba(0,0,180,0.75)",
-        //線を破線にする
-        borderDash: [],
-        //破線のオフセット(基準点からの距離)
-        borderDashOffset: 0.0,
-        //線と線が交わる箇所のスタイル。初期値は'miter'
-          borderJoinStyle: 'miter',
-          //線の幅。ピクセル単位で指定。初期値は3。
-          borderWidth: 3,
-          //グラフを塗りつぶすかどうか。初期値はtrue。falseにすると枠線だけのグラフになります。
-          fill: false,
-          //複数のグラフを重ねて描画する際の重なりを設定する。z-indexみたいなもの。初期値は0。
-          order: 0,
-          //0より大きい値にすると「ベジェ曲線」という数式で曲線のグラフになります。初期値は0。
-          lineTension: 0
-      }
-    ]
+    labels: ["消した数","必要な数"],
+    datasets: [{
+      label: "値",
+      data: [rBlocks.reduce((sum, element) => sum + element, 0),maxBlocks],
+      backgroundColor: ['#4169e1']
+    }],
   },
   options: {
-    scales: {
-      r: {
-        //グラフの最小値・最大値
-        min: 0
-      }
-    }
+    responsive: false
   }
 });
-
+var ctx2 = document.getElementById("myRadarChart2");
+var myChart2 = new Chart(ctx2.getContext('2d'), {
+  type: 'bar',
+  data: {
+    labels: ["カラフル球","ブラック球"],
+    datasets: [{
+      label: "値",
+      data: [cItems[0],cItems[1]],
+      backgroundColor: ['#ffa500']
+    }],
+  },
+  options: {
+    responsive: false
+  }
+});
 var sumBlocks = rBlocks.reduce((sum, element) => sum + element, 0)
-var s = Math.round(sumBlocks/maxBlocks*100)+parseInt(cItems[0]*4)+parseInt(cItems[1]*5);
-console.log(s);
+var s = Math.round(sumBlocks/maxBlocks*100)+parseInt(cItems[0]*6)+parseInt(cItems[1]*8);
 scs.textContent = String(s)+"pt";
 
-
 ctx.classList.remove("nov");
+ctx2.classList.remove("nov");
 scs.classList.remove("nov");
 
 }

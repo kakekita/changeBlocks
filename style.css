@@ -27,3 +27,9 @@ canvas {
 	background: repeating-linear-gradient(0deg, #B67B03 0.1em, #DAAF08 0.2em, #FEE9A0 0.3em, #DAAF08 0.4em, #B67B03 0.5em); 
 	-webkit-background-clip: text;
 }
+.font2 {
+	font-size:5em;
+	text-align:center;
+	line-height:0.95em;
+	font-weight:bold;
+}
