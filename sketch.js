@@ -506,8 +506,8 @@ function settings() {
   var i = 0;
   while(goalk.length < 4) {
     var r = Math.floor(Math.random() * 6);
-    //var r2 = Math.floor(Math.random() * 8)+24;
-    var r2 = Math.floor(Math.random() * 8);
+    var r2 = Math.floor(Math.random() * 8)+24;
+    //var r2 = Math.floor(Math.random() * 8);
     if(goalk.indexOf(r) == -1) {
       i++;
       var rt = document.getElementById("rect"+String(i));
